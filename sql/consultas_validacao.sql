@@ -1,5 +1,5 @@
 ```sql
-USE company_constraints;
+USE azure_company;
 
 -- 1. Funcionarios sem supervisor direto
 SELECT Fname, Lname, Ssn, Super_ssn
