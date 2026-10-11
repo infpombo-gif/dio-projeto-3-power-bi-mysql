@@ -44,3 +44,43 @@ Os scripts SQL foram organizados no repositório. As transformações descritas 
 ## 6. Conclusão
 
 O objetivo é produzir uma base consistente, documentada e adequada à análise de dados, preservando a integridade dos relacionamentos e justificando as decisões de transformação.
+
+## 7. Análise das regras de negócio e qualidade dos dados
+
+### Valores nulos
+
+O campo `Super_ssn` pode ser nulo para um funcionário que não possui supervisor direto. Esse caso deve ser analisado conforme a hierarquia organizacional, sem remoção automática do registro.
+
+O campo `Mgr_ssn` da tabela `departament` é definido como obrigatório no esquema original. Ainda assim, é importante verificar a integridade dos relacionamentos.
+
+### Tipos de dados
+
+- `Salary`: valor monetário que deve ser tratado como número decimal.
+- `Hours`: quantidade de horas que deve permanecer numérica.
+- Datas de nascimento, criação de departamentos e início de gerência devem ser reconhecidas como datas.
+- Identificadores e códigos devem preservar seu significado e formato.
+
+### Relacionamentos
+
+As tabelas são relacionadas pelos seguintes campos:
+
+- `employee.Dno` → `departament.Dnumber`
+- `employee.Super_ssn` → `employee.Ssn`
+- `departament.Mgr_ssn` → `employee.Ssn`
+- `dept_locations.Dnumber` → `departament.Dnumber`
+- `project.Dnum` → `departament.Dnumber`
+- `works_on.Essn` → `employee.Ssn`
+- `works_on.Pno` → `project.Pnumber`
+- `dependent.Essn` → `employee.Ssn`
+
+### Mesclagem de informações
+
+A mesclagem permite acrescentar informações relacionadas de outra tabela, como nome do departamento ou nome do gerente. A escolha entre `INNER JOIN` e `LEFT JOIN` deve considerar quais registros precisam ser preservados.
+
+### Agregações
+
+A contagem de funcionários por departamento e a soma de horas por projeto permitem criar indicadores úteis para análise gerencial.
+
+### Limitações atuais
+
+As consultas e regras foram preparadas com base na estrutura e nos dados presentes nos scripts. A execução real, a validação dos resultados e a implementação das transformações no Power BI permanecem pendentes.
