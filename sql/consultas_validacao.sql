@@ -52,3 +52,38 @@ LEFT JOIN dept_locations AS l
     ON d.Dnumber = l.Dnumber
 ORDER BY d.Dname, l.Dlocation;
 ```
+
+```sql
+-- 7. Funcionarios sem departamento correspondente
+SELECT
+    e.Ssn,
+    e.Fname,
+    e.Lname,
+    e.Dno
+FROM employee AS e
+LEFT JOIN departament AS d
+    ON e.Dno = d.Dnumber
+WHERE d.Dnumber IS NULL;
+
+-- 8. Funcionarios com supervisor nao encontrado
+SELECT
+    e.Ssn,
+    e.Fname,
+    e.Lname,
+    e.Super_ssn
+FROM employee AS e
+LEFT JOIN employee AS s
+    ON e.Super_ssn = s.Ssn
+WHERE e.Super_ssn IS NOT NULL
+  AND s.Ssn IS NULL;
+
+-- 9. Departamentos com gerente nao encontrado
+SELECT
+    d.Dnumber,
+    d.Dname,
+    d.Mgr_ssn
+FROM departament AS d
+LEFT JOIN employee AS e
+    ON d.Mgr_ssn = e.Ssn
+WHERE e.Ssn IS NULL;
+```
